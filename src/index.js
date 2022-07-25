@@ -3,13 +3,9 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import { ChakraProvider } from "@chakra-ui/react";
 import RouterComponent from "./components/router";
-
-ReactDOM.render(
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
   <React.StrictMode>
-    <ChakraProvider>
-      <RouterComponent />
-    </ChakraProvider>
+    <RouterComponent />
   </React.StrictMode>,
-  document.getElementById("root")
 );
-
