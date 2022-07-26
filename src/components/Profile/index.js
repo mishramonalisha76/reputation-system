@@ -1,15 +1,17 @@
 import React,{useState,useEffect} from "react";
+import { useParams } from 'react-router-dom';
 import axios from "axios";
 import "./profile.css";
 
-export default function Profile(props) {
-  console.log(props)
-  const [githubData,setGithubData] = useState({});
+export default function Profile() {
+  const { githubId } = useParams();
+  const [githubData,setGithubData] = useState([]);
   useEffect(() => {
     axios
-      .get(`https://api.github.com/users/${props.match.params.githubId}/events`)
+      .get(`https://api.github.com/users/${githubId}/events`)
       .then((response) => {
         console.log(response);
+        setGithubData(response.data)
       })
       .catch((err) => {
       
