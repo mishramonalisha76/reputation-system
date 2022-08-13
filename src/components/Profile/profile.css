@@ -54,6 +54,17 @@
     flex-direction: column;
     align-items: center;
 }
+.profile-column-left div {
+    text-align: center;
+    margin: 3% 0;
+}
+.profile-column-left div p {
+    font-weight: 500;
+}
+
+.profile-column-left div a {
+    font-size: larger;
+}
 .profile-column-right{
     display: flex;
     flex-direction: column;
@@ -68,4 +79,9 @@
     border: none;
     border-radius: 5px;
     align-self: flex-end;
+    cursor: pointer;
+}
+.profile-button:hover {
+    background-color: rgb(26, 31, 31);
+    color: white;
 }

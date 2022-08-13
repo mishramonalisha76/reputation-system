@@ -13,3 +13,13 @@ code {
     monospace;
 }
 
+a {
+  display: block;
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+}
+a:hover {
+  color: blue;
+}
+
