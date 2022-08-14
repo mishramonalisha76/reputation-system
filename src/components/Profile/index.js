@@ -5,13 +5,17 @@ import { WalletAddressContext } from "../../context";
 import idl from "../../idl.json";
 import { Connection, PublicKey, clusterApiUrl } from "@solana/web3.js";
 import { Program, AnchorProvider, web3 } from "@project-serum/anchor";
+import kp from "../../keypair.json";
+import bs58 from "bs58";
 import "./profile.css";
 
 // SystemProgram is a reference to the Solana runtime!
 const { SystemProgram, Keypair } = web3;
 
 // Create a keypair for the account that will hold the GIF data.
-let baseAccount = Keypair.generate();
+const arr = Object.values(kp._keypair.secretKey);
+const secret = new Uint8Array(arr);
+const baseAccount = web3.Keypair.fromSecretKey(secret);
 
 // Get our program's id from the IDL file.
 const programID = new PublicKey(idl.metadata.address);
@@ -32,8 +36,6 @@ export default function Profile() {
   const [githubEventData, setGithubEventData] = useState([]);
   const [totalCommits, setTotalCommits] = useState(0);
   const [accountList, setAccountList] = useState([]);
-
-  
 
   useEffect(() => {
     axios
@@ -89,6 +91,9 @@ export default function Profile() {
       );
 
       console.log("Got the account", account);
+      console.log(walletAddress)
+      //converts words to address
+      console.log((account.profileList[0].userAddress).toString());
       setAccountList(account.profileList);
     } catch (error) {
       console.log("Error in getAccountDetails: ", error);
@@ -100,18 +105,18 @@ export default function Profile() {
     try {
       const provider = getProvider();
       const program = new Program(idl, programID, provider);
-      console.log(provider.wallet.publicKey)
-      await program.rpc.addProfile(githubData.url,'', {
+      console.log(provider.wallet.publicKey);
+      await program.rpc.addProfile(githubData.url, "", {
         accounts: {
           baseAccount: baseAccount.publicKey,
           user: provider.wallet.publicKey,
         },
       });
-      console.log("Profile successfully sent to program", githubData.url)
-  
+      console.log("Profile successfully sent to program", githubData.url);
+
       await getAccountDetails();
     } catch (error) {
-      console.log("Error sending Profile:", error)
+      console.log("Error sending Profile:", error);
     }
   };
 
@@ -170,7 +175,13 @@ export default function Profile() {
             Do One-Time Initialization For GIF Program Account
           </button>
         ) : null}
-        <h1 className="profile-card-item profile-heading">Profile</h1>
+        <h1 className="profile-card-item profile-heading">
+          Profile {' '}
+          {accountList.some(function (account) {
+            return account.userAddress.toString() === walletAddress;
+          }) && <span className="tag">verified</span>}
+        </h1>
+
         <hr className="profile-hr" />
         <div className="profile-column">
           <div className="profile-column-left">
@@ -219,7 +230,7 @@ export default function Profile() {
         >
           Get sharable link
         </button>
-        {!searchParams.get("linkShare") && accountList != null &&(
+        {!searchParams.get("linkShare") && accountList != null && (
           <button
             className="profile-card-item profile-button"
             onClick={() => addProfile()}

@@ -41,6 +41,7 @@
     align-self: center;
     color: rgb(105, 198, 187);
 }
+
 .profile-hr{
  width: 100%;
 }
@@ -85,3 +86,37 @@
     background-color: rgb(26, 31, 31);
     color: white;
 }
+
+.tag {
+    font-size: 1rem;
+    text-align: center;
+    line-height: 1;
+    color: black;
+    animation: neon .08s ease-in-out infinite alternate;
+}
+
+/*-- Animation Keyframes --*/
+
+
+@keyframes neon {
+  from {
+    text-shadow:
+    0 0 6px rgba(202,228,225,0.92),
+    0 0 30px rgba(202,228,225,0.34),
+    0 0 12px rgba(30, 242, 118, 0.52),
+    0 0 21px rgba(30, 242, 94, 0.92),
+    0 0 34px rgba(55, 242, 30, 0.78),
+    0 0 54px rgba(140, 242, 30, 0.92);
+  }
+  to {
+    text-shadow:
+    0 0 6px rgba(202,228,225,0.98),
+    0 0 30px rgba(202,228,225,0.42),
+    0 0 12px rgba(30, 242, 111, 0.52),
+    0 0 22px rgba(30, 242, 94, 0.92),
+    0 0 38px rgba(55, 242, 30, 0.78),
+    0 0 60px rgba(140, 242, 30, 0.92);
+  }
+}
+
+
