@@ -3,6 +3,7 @@ import { useParams, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { WalletAddressContext } from "../../context";
 import idl from "../../idl.json";
+import { useNavigate } from "react-router-dom";
 import { Connection, PublicKey, clusterApiUrl } from "@solana/web3.js";
 import { Program, AnchorProvider, web3 } from "@project-serum/anchor";
 import kp from "../../keypair.json";
@@ -29,6 +30,7 @@ const opts = {
 };
 export default function Profile() {
   const { githubId } = useParams();
+  const walletAddressUrl = useParams().walletAddress;
   const [searchParams, setSearchParams] = useSearchParams();
   const { walletAddress, setWalletAddress } = useContext(WalletAddressContext);
   const [githubData, setGithubData] = useState([]);
@@ -36,8 +38,14 @@ export default function Profile() {
   const [githubEventData, setGithubEventData] = useState([]);
   const [totalCommits, setTotalCommits] = useState(0);
   const [accountList, setAccountList] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    if(searchParams.get("linkShare"))
+    {
+      console.log(walletAddressUrl)
+      setWalletAddress(walletAddressUrl);
+    }
     axios
       .all([
         axios.get(`https://api.github.com/users/${githubId}/events`),
@@ -52,13 +60,16 @@ export default function Profile() {
           setRecentWork(getRecentWork(response1.data));
         })
       )
-      .catch((err) => {});
-    if (walletAddress) {
+      .catch((err) => {
+        alert("Please enter valid github id");
+        navigate(`/`);
+      });
+    // if (walletAddress) {
       console.log("Fetching Account list...");
       getAccountDetails();
-    }
+  //  }
   }, [walletAddress]);
-
+console.log(walletAddress)
   const createProfileAccount = async () => {
     try {
       const provider = getProvider();
@@ -91,9 +102,9 @@ export default function Profile() {
       );
 
       console.log("Got the account", account);
-      console.log(walletAddress)
+      console.log(walletAddress);
       //converts words to address
-      console.log((account.profileList[0].userAddress).toString());
+      console.log(account.profileList[0].userAddress.toString());
       setAccountList(account.profileList);
     } catch (error) {
       console.log("Error in getAccountDetails: ", error);
@@ -167,7 +178,7 @@ export default function Profile() {
         </h2>
       </div>
       <div className="profile-card-left">
-        {accountList === null ? (
+        {accountList === null? (
           <button
             className="profile-card-item profile-button"
             onClick={() => createProfileAccount()}
@@ -176,7 +187,7 @@ export default function Profile() {
           </button>
         ) : null}
         <h1 className="profile-card-item profile-heading">
-          Profile {' '}
+          Profile{" "}
           {accountList.some(function (account) {
             return account.userAddress.toString() === walletAddress;
           }) && <span className="tag">verified</span>}
@@ -192,12 +203,14 @@ export default function Profile() {
                   <a herf={githubData.url}>{githubId}</a>
                   <p>GithubID</p>
                 </div>
-                <div>
-                  <a herf={recentWork.repo}>
-                    {recentWork.repo && recentWork.repo.split("/").pop()}
-                  </a>
-                  <p>Recent Work</p>
-                </div>
+                {recentWork && (
+                  <div>
+                    <a herf={recentWork ? recentWork.repo : "#"}>
+                      {recentWork.repo && recentWork.repo.split("/").pop()}
+                    </a>
+                    <p>Recent Work</p>
+                  </div>
+                )}
                 <div>
                   <a herf={githubData.repos_url}>{githubData.public_repos}</a>
                   <p>Repositories</p>
