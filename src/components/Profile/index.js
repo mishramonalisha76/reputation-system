@@ -3,19 +3,10 @@ import { useParams, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { WalletAddressContext } from "../../context";
 import idl from "../../idl.json";
-import { Connection, PublicKey, clusterApiUrl } from '@solana/web3.js';
-import { Program, AnchorProvider, web3 } from '@project-serum/anchor';
+import { Connection, PublicKey, clusterApiUrl } from "@solana/web3.js";
+import { Program, AnchorProvider, web3 } from "@project-serum/anchor";
 import "./profile.css";
 
-export default function Profile() {
-  const { githubId } = useParams();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const { walletAddress, setWalletAddress } = useContext(WalletAddressContext);
-  const [githubData, setGithubData] = useState([]);
-  const [recentWork, setRecentWork] = useState({});
-  const [githubEventData, setGithubEventData] = useState([]);
-  const [totalCommits, setTotalCommits] = useState(0);
-  
 // SystemProgram is a reference to the Solana runtime!
 const { SystemProgram, Keypair } = web3;
 
@@ -26,12 +17,23 @@ let baseAccount = Keypair.generate();
 const programID = new PublicKey(idl.metadata.address);
 
 // Set our network to devnet.
-const network = clusterApiUrl('devnet');
+const network = clusterApiUrl("devnet");
 
 // Controls how we want to acknowledge when a transaction is "done".
 const opts = {
-  preflightCommitment: "processed"
-}
+  preflightCommitment: "processed",
+};
+export default function Profile() {
+  const { githubId } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { walletAddress, setWalletAddress } = useContext(WalletAddressContext);
+  const [githubData, setGithubData] = useState([]);
+  const [recentWork, setRecentWork] = useState({});
+  const [githubEventData, setGithubEventData] = useState([]);
+  const [totalCommits, setTotalCommits] = useState(0);
+  const [accountList, setAccountList] = useState([]);
+
+  
 
   useEffect(() => {
     axios
@@ -49,70 +51,79 @@ const opts = {
         })
       )
       .catch((err) => {});
-      if (walletAddress) {
-        console.log('Fetching Account list...');
-        createProfileAccount();
-      }
-  }, []);
+    if (walletAddress) {
+      console.log("Fetching Account list...");
+      getAccountDetails();
+    }
+  }, [walletAddress]);
 
   const createProfileAccount = async () => {
     try {
       const provider = getProvider();
       const program = new Program(idl, programID, provider);
-      console.log("ping")
+      console.log("ping");
       await program.rpc.startStuffOff({
         accounts: {
           baseAccount: baseAccount.publicKey,
           user: provider.wallet.publicKey,
           systemProgram: SystemProgram.programId,
         },
-        signers: [baseAccount]
+        signers: [baseAccount],
       });
-      console.log("Created a new BaseAccount w/ address:", baseAccount.publicKey.toString())
+      console.log(
+        "Created a new BaseAccount w/ address:",
+        baseAccount.publicKey.toString()
+      );
       await getAccountDetails();
-  
-    } catch(error) {
-      console.log("Error creating BaseAccount account:", error)
+    } catch (error) {
+      console.log("Error creating BaseAccount account:", error);
     }
-  }
+  };
 
-  const getAccountDetails = async() => {
+  const getAccountDetails = async () => {
     try {
       const provider = getProvider();
       const program = new Program(idl, programID, provider);
-      const account = await program.account.baseAccount.fetch(baseAccount.publicKey);
-      
-      console.log("Got the account", account)
-  
+      const account = await program.account.baseAccount.fetch(
+        baseAccount.publicKey
+      );
+
+      console.log("Got the account", account);
+      setAccountList(account.profileList);
     } catch (error) {
-      console.log("Error in getAccountDetails: ", error)
-
+      console.log("Error in getAccountDetails: ", error);
+      setAccountList(null);
     }
-  }
+  };
 
-  const addProfile = async() => {
+  const addProfile = async () => {
     try {
       const provider = getProvider();
       const program = new Program(idl, programID, provider);
-      console.log(program)
-      const account = await program.methods.addProfile(githubData.url,'');
-      
-      console.log("Added profile", account)
+      console.log(provider.wallet.publicKey)
+      await program.rpc.addProfile(githubData.url,'', {
+        accounts: {
+          baseAccount: baseAccount.publicKey,
+          user: provider.wallet.publicKey,
+        },
+      });
+      console.log("Profile successfully sent to program", githubData.url)
   
+      await getAccountDetails();
     } catch (error) {
-      console.log("Error in addProfile: ", error)
-
+      console.log("Error sending Profile:", error)
     }
-  }
+  };
 
-  
   const getProvider = () => {
     const connection = new Connection(network, opts.preflightCommitment);
     const provider = new AnchorProvider(
-      connection, window.solana, opts.preflightCommitment,
+      connection,
+      window.solana,
+      opts.preflightCommitment
     );
     return provider;
-  }
+  };
 
   const getRecentWork = (events) => {
     let lastCommit;
@@ -151,6 +162,14 @@ const opts = {
         </h2>
       </div>
       <div className="profile-card-left">
+        {accountList === null ? (
+          <button
+            className="profile-card-item profile-button"
+            onClick={() => createProfileAccount()}
+          >
+            Do One-Time Initialization For GIF Program Account
+          </button>
+        ) : null}
         <h1 className="profile-card-item profile-heading">Profile</h1>
         <hr className="profile-hr" />
         <div className="profile-column">
@@ -200,9 +219,11 @@ const opts = {
         >
           Get sharable link
         </button>
-        {!searchParams.get("linkShare") && (
-          <button className="profile-card-item profile-button"
-          onClick={() => addProfile()}>
+        {!searchParams.get("linkShare") && accountList != null &&(
+          <button
+            className="profile-card-item profile-button"
+            onClick={() => addProfile()}
+          >
             Store On-Chain
           </button>
         )}
