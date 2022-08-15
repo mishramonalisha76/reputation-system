@@ -41,9 +41,8 @@ export default function Profile() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if(searchParams.get("linkShare"))
-    {
-      console.log(walletAddressUrl)
+    if (searchParams.get("linkShare")) {
+      console.log(walletAddressUrl);
       setWalletAddress(walletAddressUrl);
     }
     axios
@@ -65,11 +64,11 @@ export default function Profile() {
         navigate(`/`);
       });
     // if (walletAddress) {
-      console.log("Fetching Account list...");
-      getAccountDetails();
-  //  }
+    console.log("Fetching Account list...");
+    getAccountDetails();
+    //  }
   }, [walletAddress]);
-console.log(walletAddress)
+  console.log(walletAddress);
   const createProfileAccount = async () => {
     try {
       const provider = getProvider();
@@ -178,9 +177,10 @@ console.log(walletAddress)
         </h2>
       </div>
       <div className="profile-card-left">
-        {accountList === null? (
+        {accountList !== null ? (
           <button
             className="profile-card-item profile-button"
+            style={{padding:"2%"}}
             onClick={() => createProfileAccount()}
           >
             Do One-Time Initialization For GIF Program Account
@@ -189,7 +189,7 @@ console.log(walletAddress)
         <h1 className="profile-card-item profile-heading">
           Profile{" "}
           {accountList.some(function (account) {
-            return account.userAddress.toString() === walletAddress;
+            return account.userAddress.toString() !== walletAddress;
           }) && <span className="tag">verified</span>}
         </h1>
 
@@ -237,20 +237,34 @@ console.log(walletAddress)
             </div>
           </div>
         </div>
-        <button
-          className="profile-card-item profile-button"
-          onClick={() => copyToClipboard()}
-        >
-          Get sharable link
-        </button>
-        {!searchParams.get("linkShare") && accountList != null && (
-          <button
-            className="profile-card-item profile-button"
-            onClick={() => addProfile()}
-          >
-            Store On-Chain
-          </button>
-        )}
+        <div className="profile-column">
+          <div className="profile-column-left-like">
+            <button className="profile-card-item profile-button"
+            style={{alignSelf:'center'}}>Like</button>
+            <button className="profile-card-item profile-button"
+            style={{alignSelf:'center'}}>
+              Dislike
+            </button>
+          </div>
+          <div className="profile-column-right">
+            <button
+              className="profile-card-item profile-button"
+              style={{alignSelf:'flex-end',width: "max-content"}}
+              onClick={() => copyToClipboard()}
+            >
+              Get sharable link
+            </button>
+            {!searchParams.get("linkShare") && accountList != null && (
+              <button
+                className="profile-card-item profile-button"
+                style={{alignSelf:'flex-end',width: "max-content"}}
+                onClick={() => addProfile()}
+              >
+                Store On-Chain
+              </button>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
