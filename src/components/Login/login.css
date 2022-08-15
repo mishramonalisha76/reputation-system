@@ -9,7 +9,7 @@
   
 }
 .login-card-right{
-  background-color: rgb(56, 209, 168);
+  background-color: rgb(169,163,249);
   display: flex;
   flex: 1.2;
   align-items: center;
@@ -55,7 +55,6 @@
     font-weight: 600;
     font-size: 1rem;
     background-color: rgb(105, 198, 187);
-    /* background-image: linear-gradient(to bottom right, rgb(158, 64, 212), rgb(128, 194, 199),rgb(105, 198, 187)); */
     border: none;
     border-radius: 5px;
     cursor: pointer;
