@@ -7,7 +7,7 @@ import RouterComponent from "./components/router";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-   
+    <h1 style={{margin:'1rem 0 0 1rem',letterSpacing:'0.6rem'}}>SOLREP</h1>
     <RouterComponent />
   </React.StrictMode>
 );
