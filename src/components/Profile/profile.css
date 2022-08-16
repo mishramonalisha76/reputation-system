@@ -13,6 +13,7 @@
         display: flex;
     flex: 1.2;
     align-items: center;
+    flex-direction: column;
     justify-content: center;
     padding:2% 2.3%;
   }
@@ -50,6 +51,11 @@
     flex-direction: row;
     justify-content: space-around;
 }
+.profile-column-left-like{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
 .profile-column-left{
     display: flex;
     flex-direction: column;
@@ -72,7 +78,7 @@
     align-items: center;
 }
 .profile-button {
-    padding: 2%;
+    padding: 8%;
     font-weight: 600;
     font-size: 1rem;
     background-color: rgb(169,163,249);
