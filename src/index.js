@@ -9,7 +9,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <div style={{width:'13rem',height:'8rem',margin:'1rem 0 0 1rem'}}>
-      <img style={{width:'100%',overflow:'hidden'}} src={Logo} alt="logo" />
+      <img style={{width:'100%',overflow:'hidden',borderRadius:'50%'}} src={Logo} alt="logo" />
     </div>
     {/* <h1 style={{margin:'1rem 0 0 1rem',letterSpacing:'0.6rem'}}>SOLREPUTE</h1> */}
     <RouterComponent />

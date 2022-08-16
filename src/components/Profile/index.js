@@ -103,7 +103,6 @@ export default function Profile() {
       console.log("Got the account", account);
       console.log(walletAddress);
       //converts words to address
-      console.log(account.profileList[0].userAddress.toString());
       setAccountList(account.profileList);
     } catch (error) {
       console.log("Error in getAccountDetails: ", error);
