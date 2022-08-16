@@ -177,7 +177,7 @@ export default function Profile() {
         </h2>
       </div>
       <div className="profile-card-left">
-        {accountList !== null ? (
+        {accountList === null ? (
           <button
             className="profile-card-item profile-button"
             style={{padding:"2%"}}

@@ -3,11 +3,15 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import RouterComponent from "./components/router";
+import Logo from "./logo.png";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <h1 style={{margin:'1rem 0 0 1rem',letterSpacing:'0.6rem'}}>SOLREPUTE</h1>
+    <div style={{width:'13rem',height:'8rem',margin:'1rem 0 0 1rem'}}>
+      <img style={{width:'100%',overflow:'hidden'}} src={Logo} alt="logo" />
+    </div>
+    {/* <h1 style={{margin:'1rem 0 0 1rem',letterSpacing:'0.6rem'}}>SOLREPUTE</h1> */}
     <RouterComponent />
   </React.StrictMode>
 );
