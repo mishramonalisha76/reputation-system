@@ -5,12 +5,12 @@
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     color: black;
     width: 50%;
-    margin: 10% auto;
+    margin: 5% auto;
     
   }
   .profile-card-right{
-    background-color: rgb(56, 209, 168);
-    display: flex;
+    background-color: rgb(169,163,249);
+        display: flex;
     flex: 1.2;
     align-items: center;
     justify-content: center;
@@ -39,8 +39,9 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent; */
     align-self: center;
-    color: rgb(105, 198, 187);
+   color: rgb(169,163,249);
 }
+
 .profile-hr{
  width: 100%;
 }
@@ -74,7 +75,7 @@
     padding: 2%;
     font-weight: 600;
     font-size: 1rem;
-    background-color: rgb(105, 198, 187);
+    background-color: rgb(169,163,249);
     /* background-image: linear-gradient(to bottom right, rgb(158, 64, 212), rgb(128, 194, 199),rgb(105, 198, 187)); */
     border: none;
     border-radius: 5px;
@@ -85,3 +86,37 @@
     background-color: rgb(26, 31, 31);
     color: white;
 }
+
+.tag {
+    font-size: 1rem;
+    text-align: center;
+    line-height: 1;
+    color: black;
+    animation: neon .08s ease-in-out infinite alternate;
+}
+
+/*-- Animation Keyframes --*/
+
+
+@keyframes neon {
+  from {
+    text-shadow:
+    0 0 6px rgba(202,228,225,0.92),
+    0 0 30px rgba(202,228,225,0.34),
+    0 0 12px rgba(30, 242, 118, 0.52),
+    0 0 21px rgba(30, 242, 94, 0.92),
+    0 0 34px rgba(55, 242, 30, 0.78),
+    0 0 54px rgba(140, 242, 30, 0.92);
+  }
+  to {
+    text-shadow:
+    0 0 6px rgba(202,228,225,0.98),
+    0 0 30px rgba(202,228,225,0.42),
+    0 0 12px rgba(30, 242, 111, 0.52),
+    0 0 22px rgba(30, 242, 94, 0.92),
+    0 0 38px rgba(55, 242, 30, 0.78),
+    0 0 60px rgba(140, 242, 30, 0.92);
+  }
+}
+
+
