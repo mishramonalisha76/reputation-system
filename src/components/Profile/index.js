@@ -101,7 +101,7 @@ export default function Profile() {
       );
 
       console.log("Got the account", account);
-      console.log(walletAddress);
+      console.log(walletAddress.getTokenAccountsByOwner());
       //converts words to address
       setAccountList(account.profileList);
     } catch (error) {
@@ -114,7 +114,7 @@ export default function Profile() {
     try {
       const provider = getProvider();
       const program = new Program(idl, programID, provider);
-      console.log(provider.wallet.publicKey);
+      console.log(provider.wallet.getTokenAccountsByOwner());
       await program.rpc.addProfile(githubData.url, "", {
         accounts: {
           baseAccount: baseAccount.publicKey,
@@ -226,12 +226,14 @@ export default function Profile() {
           <div className="profile-column-right">
             <h2>On-Chain</h2>
             <div>
+              <p>2</p>
               <p>NFTs</p>
             </div>
             <div>
               <p>Courses</p>
             </div>
             <div>
+              
               <p>Balance</p>
             </div>
           </div>
