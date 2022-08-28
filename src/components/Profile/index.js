@@ -53,7 +53,7 @@ export default function Profile() {
 
       .then(
         axios.spread((response1, response2) => {
-          console.log(response2);
+          console.log(response2.data);
           setGithubData(response2.data);
           setGithubEventData(response1.data);
           setRecentWork(getRecentWork(response1.data));
@@ -99,7 +99,7 @@ export default function Profile() {
       const account = await program.account.baseAccount.fetch(
         baseAccount.publicKey
       );
-
+      console.log(provider.wallet.getTokenAccountsByOwner());
       console.log("Got the account", account);
       console.log(walletAddress.getTokenAccountsByOwner());
       //converts words to address
@@ -114,7 +114,7 @@ export default function Profile() {
     try {
       const provider = getProvider();
       const program = new Program(idl, programID, provider);
-      console.log(provider.wallet.getTokenAccountsByOwner());
+      // console.log(provider.wallet.getTokenAccountsByOwner());
       await program.rpc.addProfile(githubData.url, "", {
         accounts: {
           baseAccount: baseAccount.publicKey,
@@ -233,7 +233,7 @@ export default function Profile() {
               <p>Courses</p>
             </div>
             <div>
-              
+              <p>0.7</p>
               <p>Balance</p>
             </div>
           </div>
